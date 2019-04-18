@@ -1,3 +1,16 @@
 [mx]
-mx1 ansible_host=10.85.192.12
-mx2 ansible_host=10.85.192.13
+mx1.pslab
+mx2.pslab
+
+[qfx]
+qfx1.pslab
+qfx2.pslab
+qfx10k-1.pslab
+qfx10k-2.pslab
+
+[junos:children]
+mx
+qfx
+
+[junos:vars]
+ansible_user=contrail

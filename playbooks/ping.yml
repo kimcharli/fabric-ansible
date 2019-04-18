@@ -1,10 +1,18 @@
 ---
 - name: Gather facts from Junos devices
-  hosts: mx
+  hosts: junos
   connection: local
   gather_facts: no
   roles:
     - Juniper.junos
+  vars:
+    connection_settings:
+      host: "{{ ansible_host }}"
+      ssh_config: ~/.ssh/config.d/pslab-quincy
+
   tasks:
     - name: Gather Junos facts with no configuration
       juniper_junos_facts:
+        provider: "{{ connection_settings }}"
+
+
