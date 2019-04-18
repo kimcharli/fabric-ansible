@@ -1,0 +1,21 @@
+= fabric ansible
+:toc:
+
+== phase1
+
+[source,bash]
+----
+sudo mkdir -p /var/log/ansible
+sudo chown -R ${USER}: /var/log/ansible
+ansible --version || source ~/ENV/ansible-jnpr/bin/activate
+rsync -avz inventory/quincy-example/ inventory/work
+sed -i ''  "s@ansible_python_interpreter: .*@ansible_python_interpreter: $(which python)@" inventory/work/group_vars/all.yaml
+----
+
+
+
+== references
+- https://junos-ansible-modules.readthedocs.io/
+- https://github.com/Juniper/ansible-junos-stdlib
+- https://docs.ansible.com/ansible/latest/modules/junos_config_module.html
+
