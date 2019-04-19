@@ -1,0 +1,9 @@
+---
+myinterfaces:
+  - name: et-0/0/48
+    description: qfx10k-2 et-0/0/7
+    address: 192.168.0.15/31
+  - name: et-0/0/49
+    description: qfx10k-1 et-0/0/7
+    address: 192.168.0.11/31
+

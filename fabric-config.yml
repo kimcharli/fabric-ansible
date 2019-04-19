@@ -7,10 +7,11 @@
     - Juniper.junos
   vars:
     tmp_dir: "work/tmp"
-    conf_file: "{{ tmp_dir}}/{{ inventory_hostname }}.conf"
+    conf_file: "{{ tmp_dir }}/{{ inventory_hostname }}.conf"
     connection_settings:
       host: "{{ ansible_host }}"
       ssh_config: ~/.ssh/config.d/pslab-quincy
+    playbook_name: fabric-config.yml
 
   tasks:
     - name: confirm or create configs directory
@@ -28,7 +29,7 @@
       juniper_junos_config:
         provider: "{{ connection_settings }}"
         load: replace
-        comment: install-config.yaml playbook with nameserver.conf file
+        comment: "playbook {{ playbook_name }}, playbook with nameserver.conf file"
         confirmed: 5
         src: "{{ conf_file }}"
         diff: yes
@@ -49,7 +50,7 @@
     - name: confirm previous commit
       juniper_junos_config:
         provider: "{{ connection_settings }}"
-        comment: "playbook base-settings.yaml, confirming previous commit"
+        comment: "playbook {{ playbook_name }}, confirming previous commit"
         commit: yes
         diff: no
 

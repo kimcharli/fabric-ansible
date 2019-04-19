@@ -1,0 +1,9 @@
+---
+myinterfaces:
+  - name: xe-0/0/0
+    description: qfx10k-1 xe-0/0/0:0
+    address: 192.168.0.4/31
+  - name: xe-0/0/3
+    description: qfx10k-2 xe-0/0/0:0
+    address: 192.168.0.6/31
+

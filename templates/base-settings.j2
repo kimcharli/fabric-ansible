@@ -1,12 +1,20 @@
-groups {
-    delete: test;
-    test {
-        interfaces {
-            lo0 {
-                unit 123 {
-                    family inet;
-                }
+interfaces {
+{% for item in myinterfaces %}
+    delete: {{ item.name }};
+    {{ item.name }} {
+        description "{{ item.description | default('none') }}";
+        unit 0 {
+            family inet {
+                address {{ item.address | default('255.255.0.1/32') }} ;
             }
         }
     }
+{% endfor %}
 }
+protocols {
+    lldp {
+        port-id-subtype interface-name;
+        interface all;
+    }
+}
+
