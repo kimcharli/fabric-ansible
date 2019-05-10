@@ -29,7 +29,6 @@
 
     - name: save device information using template
       template:
-#        src: base-settings.j2
         src: base-and-ebgp.j2
         dest: "{{ conf_file }}"
 

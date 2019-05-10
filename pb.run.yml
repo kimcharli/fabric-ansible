@@ -6,12 +6,12 @@
   roles:
     - Juniper.junos
   vars:
-    tmp_dir: "work/tmp"
+    tmp_dir: "work"
     conf_file: "{{ tmp_dir }}/{{ inventory_hostname }}.conf"
     connection_settings:
       host: "{{ ansible_host }}"
       ssh_config: ~/.ssh/config.d/pslab-quincy
-    playbook_name: fabric-config.yml
+    playbook_name: pb.run.yml
 
   tasks:
     - name: confirm or create configs directory
@@ -20,9 +20,8 @@
         state: directory
       run_once: yes
 
-    - name: save device information using template
+    - name: build device configuration
       template:
-#        src: base-settings.j2
         src: base-and-ebgp.j2
         dest: "{{ conf_file }}"
 
@@ -30,7 +29,7 @@
       juniper_junos_config:
         provider: "{{ connection_settings }}"
         load: replace
-        comment: "playbook {{ playbook_name }}, playbook with nameserver.conf file"
+        comment: "playbook {{ playbook_name }}"
         confirmed: 5
         src: "{{ conf_file }}"
         diff: yes
@@ -46,6 +45,7 @@
       file:
         path: "{{ conf_file }}"
         state: absent
+      when: false
 
   handlers:
     - name: confirm previous commit

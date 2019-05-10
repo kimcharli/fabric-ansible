@@ -1,25 +1,49 @@
 = fabric ansible
 :toc:
 
-== phase1
+Configure underlay ebgp connection of fabric device
+
+== adjust inventory before run
+default inventory is inventory/quincy-example
 
 [source,bash]
 ----
-sudo mkdir -p /var/log/ansible
-sudo chown -R ${USER}: /var/log/ansible
-ansible --version || source ~/ENV/ansible-jnpr/bin/activate
-rsync -avz inventory/quincy-example/ work/inventory/
-sed -i '' "s@ansible_python_interpreter: .*@ansible_python_interpreter: $(which python )@" work/inventory/group_vars/all.yaml
+sudo mkdir -p /var/log/ansible                              # for ansilbe logging
+sudo chown -R ${USER}: /var/log/ansible                     # for ansilbe logging
+ansible --version || source ~/ENV/ansible-jnpr/bin/activate # assming to run in virtualenv
+# update ansible_python_interpreter in all.yml
+sed -i '' "s@ansible_python_interpreter: .*@ansible_python_interpreter: $(which python )@" inventory/quincy-example/group_vars/all.yaml
 ----
 
-== check connectivity
+host ssh config and generated configuration example
+----
+example/
+├── .ssh
+│   ├── config
+│   └── config.d
+│       └── pslab-quincy
+└── work
+    ├── mx1.conf
+    ├── mx2.conf
+    ├── qfx1.conf
+    ├── qfx10k-1.conf
+    ├── qfx10k-2.conf
+    └── qfx2.conf
+----
+
+== check connectivity by ping
 
 [source,bash]
 ----
-ansible-playbook playbooks/ping.yml
+ansible-playbook pb.ping.yml
 ----
 
+== run
 
+[source,bash]
+----
+ansible-playbook pb.run.yml
+----
 
 
 == references
