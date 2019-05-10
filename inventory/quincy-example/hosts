@@ -1,12 +1,12 @@
 [mx]
-mx1.pslab
-mx2.pslab
+mx1
+mx2
 
 [qfx]
-qfx1.pslab
-qfx2.pslab
-qfx10k-1.pslab
-qfx10k-2.pslab
+qfx1
+qfx2
+qfx10k-1
+qfx10k-2
 
 [junos:children]
 mx

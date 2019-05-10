@@ -1,0 +1,17 @@
+---
+ansible_host: mx2.pslab
+interfaces_ebgp:
+  xe-0/0/0:
+    description: qfx10k-1 xe-0/0/0:0
+    address: 192.168.0.4/31
+    peer: qfx10k-1
+    peer_interface: xe-0/0/0:0
+  xe-0/0/3:
+    description: qfx10k-2 xe-0/0/0:0
+    address: 192.168.0.6/31
+    peer: qfx10k-2
+    peer_interface: xe-0/0/0:0
+bgp:
+  underlay_as: 4210000002
+lo0:
+  address: 10.0.0.2

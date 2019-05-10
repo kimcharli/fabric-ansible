@@ -1,0 +1,74 @@
+interfaces {
+{% for key, value in interfaces_ebgp.iteritems() %}
+    delete: {{ key }};
+    {{ key }} {
+        description "{{ value.description | default('none') }}";
+        unit 0 {
+            family inet {
+                address {{ value.address | default('255.255.0.1/32') }} ;
+            }
+        }
+    }
+{% endfor %}
+    delete: lo0;
+    lo0 {
+        unit 0 {
+            family inet {
+                address {{ lo0.address }}/32;
+            }
+        }
+    }
+}
+routing-options {
+    forwarding-table {
+        export load-balance;
+    }
+}
+protocols {
+    delete: bgp;
+    bgp {
+        log-updown;
+        bfd-liveness-detection {
+            minimum-interval 350;
+            multiplier 3;
+            session-mode automatic;
+        }
+        group underlay-bgp {
+            type external;
+            multihop;
+            family inet {
+                unicast;
+            }
+            export underlay-bgp-export;
+            local-as {{ bgp.underlay_as }};
+            multipath multiple-as;
+{% for key, value in interfaces_ebgp.iteritems() %}
+            neighbor {{ hostvars[value.peer].interfaces_ebgp[value.peer_interface].address.split('/')[0] }} {
+                description qfx1;
+                peer-as {{ hostvars[value.peer].bgp.underlay_as }};
+            }
+{% endfor %}
+        }
+    }
+    lldp {
+        port-id-subtype interface-name;
+        interface all;
+    }
+}
+policy-options {
+    policy-statement load-balance {
+        term 1 {
+            then {
+                load-balance per-packet;
+            }
+        }
+    }
+    policy-statement underlay-bgp-export {
+        term lo0.0 {
+            from interface lo0.0;
+            then accept;
+        }
+    }
+}
+
+

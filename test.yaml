@@ -1,0 +1,40 @@
+---
+- hosts: junos
+  gather_facts: no
+#  vars:
+#    interfaces_ebgp:
+#      xe-0/0/0:
+#        description: qfx10k-1 xe-0/0/0:1
+#        address: 192.168.0.0/31
+#        peer: qfx10k-1.pslab
+#        peer_interface: xe-0/0/0:1
+#      xe-0/0/3:
+#        description: qfx10k-2 xe-0/0/0:1
+#        address: 192.168.0.2/31
+#        peer_host: qfx10k-2.pslab
+#        peer_interface: xe-0/0/0:1
+  vars:
+    tmp_dir: "work/tmp"
+    conf_file: "{{ tmp_dir }}/{{ inventory_hostname }}.conf"
+    connection_settings:
+      host: "{{ ansible_host }}"
+      ssh_config: ~/.ssh/config.d/pslab-quincy
+  connection: local
+  tasks:
+    - name: confirm or create configs directory
+      file:
+        path: "{{ tmp_dir }}"
+        state: directory
+      run_once: yes
+
+    - name: save device information using template
+      template:
+#        src: base-settings.j2
+        src: base-and-ebgp.j2
+        dest: "{{ conf_file }}"
+
+    - debug: var={{ item }}
+      loop: "{{ interfaces_ebgp | dict2items }}"
+
+    - debug: msg="interface {{ item.key }} -- {{ item.value }}"
+      with_dict: "{{ interfaces_ebgp }}"

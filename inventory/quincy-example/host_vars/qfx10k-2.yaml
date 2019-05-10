@@ -1,0 +1,28 @@
+---
+ansible_host: qfx10k-2.pslab
+interfaces_ebgp:
+  xe-0/0/0:0:
+    description: mx2 xe-0/0/3
+    address: 192.168.0.7/31
+    peer: mx2
+    peer_interface: xe-0/0/3
+  xe-0/0/0:1:
+    description: mx1 xe-0/0/3
+    address: 192.168.0.3/31
+    peer: mx1
+    peer_interface: xe-0/0/3
+  et-0/0/6:
+    description: qfx1 et-0/0/48
+    address: 192.168.0.12/31
+    peer: qfx1
+    peer_interface: et-0/0/48
+  et-0/0/7:
+    description: qfx2 et-0/0/48
+    address: 192.168.0.14/31
+    peer: qfx2
+    peer_interface: et-0/0/48
+bgp:
+  underlay_as: 4210000006
+lo0:
+  address: 10.0.0.6
+

@@ -1,5 +1,5 @@
 interfaces {
-{% for item in myinterfaces %}
+{% for item in interfaces_ebgp %}
     delete: {{ item.name }};
     {{ item.name }} {
         description "{{ item.description | default('none') }}";
